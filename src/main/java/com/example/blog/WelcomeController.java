@@ -80,4 +80,9 @@ public class WelcomeController {
 		list = qu.getAllUser();
 		return list;
 	}
+	
+	@GetMapping("/search/{s}")
+	public List<User> searchUser(@PathVariable String s) throws SQLException {
+		return qu.searchUser(s);
+	}
 }

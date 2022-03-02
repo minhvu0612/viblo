@@ -44,7 +44,12 @@ public class PostController {
 	}
 	
 	@GetMapping("/load/users/{id}")
-	public List<Post> getUser(@PathVariable int id) throws SQLException {
+	public List<Post> getPost(@PathVariable int id) throws SQLException {
 		return qu.loadPostByUserId(id);
+	}
+	
+	@GetMapping("/search/{s}")
+	public List<Post> searchPost(@PathVariable String s) throws SQLException {
+		return qu.searchPost(s);
 	}
 }

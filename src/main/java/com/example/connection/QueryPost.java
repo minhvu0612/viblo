@@ -67,6 +67,38 @@ public class QueryPost {
 		}
 	}
 	
+	
+	// Search post
+		public List<Post> searchPost(String s) throws SQLException {
+			con = connect.getConnection();
+			if (con == null) {
+				return null;
+			}
+			else {
+				pst = (PreparedStatement) con.prepareStatement("select * from posts");
+				result = pst.executeQuery();
+				if (!result.isBeforeFirst()) {
+					return null;
+				}
+				else {
+					List<Post> list = new ArrayList<Post>();
+					while (result.next()) {
+						Post p = new Post();
+						p.setId(result.getInt("id"));
+						p.setUserId(result.getInt("user_id"));
+						p.setContent(result.getString("content"));
+						p.setImg(result.getString("image"));
+						p.setUsername(queryU.getUserById(result.getInt("user_id")).getUsername());
+						p.setAvatar(queryU.getUserById(result.getInt("user_id")).getAvatar());
+						if (p.getContent().contains(s)) {
+							list.add(p);
+						}
+					}
+					return list;
+				}
+			}
+		}
+	
 	// Lấy dữ liệu của post bằng id của người dùng
 	public List<Post> loadPostByUserId(int id) throws SQLException {
 		con = connect.getConnection();

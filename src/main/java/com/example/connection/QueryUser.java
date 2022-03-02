@@ -191,4 +191,35 @@ public class QueryUser {
 			}
 		}
 	}
+	
+	// Tìm kiếm user
+		public List<User> searchUser(String s) throws SQLException {
+			con = connect.getConnection();
+			if (con == null) {
+				return null;
+			}
+			else {
+				pst = (PreparedStatement) con.prepareStatement("select * from users");
+				result = pst.executeQuery();
+				if (!result.isBeforeFirst()) {
+					return null;
+				}
+				else {
+					List<User> list = new ArrayList<User>();
+					while (result.next()) {
+						User u = new User();
+						u.setId(result.getInt("id"));
+						u.setAvatar(result.getString("avatar"));
+						u.setEmail(result.getString("email"));
+						u.setGender(result.getString("gender"));
+						u.setPassword(result.getString("password"));
+						u.setUsername(result.getString("username"));
+						if (u.getUsername().contains(s)) {
+							list.add(u);
+						}
+					}
+					return list;
+				}
+			}
+		}
 }
